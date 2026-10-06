@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import ManaSymbol from './ManaSymbol.vue'
+import { marbleDataUrl } from '../marble.js'
 
 const props = defineProps({
   title: String,
@@ -14,16 +15,18 @@ const props = defineProps({
 })
 
 const FRAMES = {
-  white: { frame: '#e8e2c2', box: '#f8f6e8', accent: '#cfc59a' },
-  blue: { frame: '#1a6fb0', box: '#d6e6f3', accent: '#0d4f80' },
-  black: { frame: '#2e2a28', box: '#cfc8c2', accent: '#151312' },
-  red: { frame: '#c8322a', box: '#f6d2c4', accent: '#8e1d17' },
-  green: { frame: '#1f7a44', box: '#cfe6d4', accent: '#0f5a2e' },
-  gold: { frame: '#c9a74a', box: '#f3e6b8', accent: '#9b7b25' },
-  colorless: { frame: '#9aa3a8', box: '#e3e7e9', accent: '#6b7479' },
+  white: { box: '#f8f6ee', accent: '#9c9580', base: [226, 223, 208], vein: [168, 158, 135] },
+  blue: { box: '#e4f1f8', accent: '#2c6f93', base: [92, 176, 218], vein: [96, 62, 140] },
+  black: { box: '#d9d4cf', accent: '#0d0c0c', base: [72, 68, 66], vein: [18, 16, 16] },
+  red: { box: '#f8e2d8', accent: '#7a1f18', base: [214, 106, 82], vein: [122, 34, 26] },
+  green: { box: '#e2efdf', accent: '#1d4d28', base: [86, 148, 84], vein: [28, 70, 36] },
+  gold: { box: '#f7eed2', accent: '#7c5c1c', base: [214, 184, 96], vein: [140, 98, 38] },
+  artifact: { box: '#ebe5dd', accent: '#463628', base: [134, 109, 90], vein: [71, 54, 45] },
+  colorless: { box: '#ecebe8', accent: '#5c5853', base: [176, 170, 164], vein: [108, 102, 96] },
 }
 
 const frame = computed(() => FRAMES[props.color] ?? FRAMES.colorless)
+const marble = computed(() => `url(${marbleDataUrl(frame.value, 347, 495)})`)
 
 // Accepts "{2}{R}{R}" or "2RR"
 const symbols = computed(() => {
@@ -42,7 +45,7 @@ const showPT = computed(() => props.power || props.toughness)
 <template>
   <div
     class="card"
-    :style="{ '--frame': frame.frame, '--box': frame.box, '--accent': frame.accent }"
+    :style="{ '--marble': marble, '--box': frame.box, '--accent': frame.accent }"
   >
     <div class="inner">
       <div class="bar title-bar">
@@ -88,23 +91,21 @@ const showPT = computed(() => props.power || props.toughness)
   gap: 6px;
   padding: 10px;
   box-sizing: border-box;
-  background: var(--frame);
-  border-radius: 8px;
+  background: var(--marble) center / cover;
+  border-radius: 6px;
 }
 
 .bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 10px;
-  background: var(--box);
-  border: 2px solid var(--accent);
-  border-radius: 10px / 50%;
-  font-weight: bold;
+  padding: 2px 6px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
 .title {
-  font-size: 17px;
+  font-size: 19px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -118,8 +119,9 @@ const showPT = computed(() => props.power || props.toughness)
 
 .art {
   height: 220px;
-  margin: 0 6px;
-  border: 2px solid var(--accent);
+  margin: 0 10px;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
   background: #444;
   overflow: hidden;
   display: flex;
@@ -139,15 +141,17 @@ const showPT = computed(() => props.power || props.toughness)
 }
 
 .type-bar {
-  font-size: 14px;
+  font-size: 15px;
+  padding-left: 12px;
 }
 
 .text-box {
   flex: 1;
-  margin: 0 6px;
+  margin: 0 14px 22px;
   padding: 8px 10px;
   background: var(--box);
   border: 2px solid var(--accent);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.12);
   font-size: 14px;
   line-height: 1.3;
   overflow: hidden;

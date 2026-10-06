@@ -4,7 +4,7 @@ import { toPng } from 'html-to-image'
 import MtgCard from './components/MtgCard.vue'
 import ManaPicker from './components/ManaPicker.vue'
 
-const colors = ['white', 'blue', 'black', 'red', 'green', 'gold', 'colorless']
+const colors = ['white', 'blue', 'black', 'red', 'green', 'gold', 'artifact', 'colorless']
 
 const title = ref('Goblin Tinkerer')
 const typeLine = ref('Creature — Goblin Artificer')

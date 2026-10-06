@@ -115,6 +115,7 @@ const showPT = computed(() => props.power || props.toughness)
   display: flex;
   gap: 2px;
   flex-shrink: 0;
+  text-shadow: none;
 }
 
 .art {
